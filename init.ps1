@@ -16,8 +16,6 @@ Per-machine requires elevation and will download and install all SDKs and runtim
 Skips the installation of prerequisite software (e.g. SDKs, tools).
 .PARAMETER NoRestore
 Skips the package restore step.
-.PARAMETER AccessToken
-An optional access token for authenticating to Azure Artifacts authenticated feeds.
 #>
 [CmdletBinding(SupportsShouldProcess=$true)]
 Param (
@@ -26,13 +24,11 @@ Param (
     [Parameter()]
     [switch]$NoPrerequisites,
     [Parameter()]
-    [switch]$NoRestore,
-    [Parameter()]
-    [string]$AccessToken
+    [switch]$NoRestore
 )
 
 if (!$NoPrerequisites) {
-    & "$PSScriptRoot\tools\Install-NuGetCredProvider.ps1" -AccessToken $AccessToken
+    & "$PSScriptRoot\tools\Install-NuGetCredProvider.ps1"
     & "$PSScriptRoot\tools\Install-DotNetSdk.ps1" -InstallLocality $InstallLocality
 }
 
