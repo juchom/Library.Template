@@ -3,8 +3,11 @@ parameters:
 
 steps:
 
+- task: NuGetAuthenticate@0
+  displayName: Authenticating NuGet feeds
+
 - powershell: |
-    .\init.ps1 -AccessToken '$(System.AccessToken)' ${{ parameters['initArgs'] }}
+    .\init.ps1 ${{ parameters['initArgs'] }}
     dotnet --info
   displayName: Install prerequisites
 

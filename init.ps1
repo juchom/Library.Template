@@ -27,8 +27,6 @@ when building.
 Install the MicroBuild setup plugin for building VSIXv3 packages.
 .PARAMETER OptProf
 Install the MicroBuild OptProf plugin for building optimized assemblies on desktop machines.
-.PARAMETER AccessToken
-An optional access token for authenticating to Azure Artifacts authenticated feeds.
 #>
 [CmdletBinding(SupportsShouldProcess=$true)]
 Param (
@@ -45,13 +43,11 @@ Param (
     [Parameter()]
     [switch]$Setup,
     [Parameter()]
-    [switch]$OptProf,
-    [Parameter()]
-    [string]$AccessToken
+    [switch]$OptProf
 )
 
 if (!$NoPrerequisites) {
-    & "$PSScriptRoot\tools\Install-NuGetCredProvider.ps1" -AccessToken $AccessToken
+    & "$PSScriptRoot\tools\Install-NuGetCredProvider.ps1"
     & "$PSScriptRoot\tools\Install-DotNetSdk.ps1" -InstallLocality $InstallLocality
 }
 
