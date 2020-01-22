@@ -31,9 +31,21 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+    - name: Restore NuGet package cache
+      uses: actions/cache@v1
+      with:
+        path: ${{ github.workspace }}/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('global.json') }}-${{ hashFiles('**/nuget.config') }}-${{ hashFiles('**/*proj') }}-${{ hashFiles('**/*.props') }}-${{ hashFiles('**/*.targets') }}
+        restore-keys: ${{ runner.os }}-nuget-${{ hashFiles('global.json') }}-${{ hashFiles('**/nuget.config') }}
+    - name: Restore dotnet tools cache
+      uses: actions/cache@v1
+      with:
+        path: ${{ github.workspace }}/obj/tools/.dotnet
+        key: ${{ runner.os }}-dotnet-${{ hashFiles('global.json') }}-${{ hashFiles('**/nuget.config') }}-${{ hashFiles('**/*proj') }}-${{ hashFiles('**/*.props') }}-${{ hashFiles('**/*.targets') }}
+        restore-keys: ${{ runner.os }}-dotnet-${{ hashFiles('global.json') }}-${{ hashFiles('**/nuget.config') }}
     - name: Install prerequisites
       run: |
-        ./init.ps1 -UpgradePrerequisites
+        ./init.ps1 -UpgradePrerequisites -InstallLocality repo
         dotnet --info
       shell: pwsh
     - name: Set pipeline variables based on source
